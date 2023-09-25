@@ -1,9 +1,10 @@
 from random import random
 from typing import List
+from collections import deque
 
 
 class Dice:
-    def __init__(self, sides) -> None:
+    def __init__(self, sides: int) -> None:
         if sides in range(1, 100):
             self.sides = sides
         else:
@@ -22,11 +23,16 @@ class Dice:
 class DiceRoller:
     def __init__(self, dice_list: List[Dice]) -> None:
         self.dice_list = dice_list
-        self.last_100_rolls = []
+        self.last_100_rolls = deque([],100)
 
     def roll(self):
         for dice in self.dice_list:
             roll = random.randint(1, dice.sides)
+            if len(self.last_100_rolls) == 100:
+                self.last_100_rolls.popleft()
+            self.last_100_rolls.append(roll)
+
+
             
 
 
