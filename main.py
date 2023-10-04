@@ -85,9 +85,8 @@ class RollHistory:
             print("Loaded all available data from the file.")
         except FileNotFoundError:
             print("Data for rolls does not exist.")
-            pass
 
-    def save_to_file(self, file_name: str):
+    def save_to_file(self, file_name: str) -> None:
         """
         Save roll history to a binary file.
 
@@ -111,9 +110,9 @@ class DiceRoller:
         self.dice_list = dice_list
         self.roll_history = roll_history
 
-    def throw(self) -> "DiceRoller":
+    def roll(self) -> "DiceRoller":
         """
-        Simulate throwing the dice and store the result in roll history.
+        Simulate rolling the dice and store the result in roll history.
 
         Returns:
             DiceRoller: The DiceRoller object for method chaining.
@@ -124,20 +123,20 @@ class DiceRoller:
             self.roll_history.add_roll(roll)
         return self
 
-    def roll_multiple_times(self, number_of_throws: int) -> "DiceRoller":
+    def roll_multiple_times(self, number_of_rolls: int) -> "DiceRoller":
         """
         Simulate rolling the dice multiple times and print the results.
 
         Args:
-            number_of_throws (int): The number of times to throw the dice.
+            number_of_rolls (int): The number of times to roll the dice.
 
         Returns:
             DiceRoller: The DiceRoller object for method chaining.
         """
-        print(f"Throwing dice {number_of_throws} times")
-        for i in range(1, number_of_throws + 1):
-            print(f"Throw {i}:")
-            self.throw()
+        print(f"Rolling dice {number_of_rolls} times")
+        for i in range(1, number_of_rolls + 1):
+            print(f"Roll {i}:")
+            self.roll()
         return self
 
     def save_rolls_to_file(self, file_name: str = "rolls") -> "DiceRoller":
@@ -189,8 +188,6 @@ def main():
 
     dice_roller = DiceRoller(dice_list, roll_history)
 
-    dice_roller = DiceRoller(dice_list, roll_history)
-
     dice_roller.load_rolls_from_file().roll_multiple_times(
         3
     ).save_rolls_to_file().display_last_rolls(10)
@@ -203,11 +200,17 @@ if __name__ == "__main__":
 # TODO:
 # Support from 1 to 5 dice. ✅
 # 1 to 100 sides ✅
-# Throwing the dice one or more times ✅
+# Rolling the dice one or more times ✅
 # Returning the values of the dice. ✅
-# Store the information about the last 100 throws ✅ Maybe store as k(dice sides):v pairs,
-# Documentation
-# Unit Tests
-# Web API
+# Store the information about the last 100 rolls ✅
+# Documentation ✅
+# Unit Tests ✅
+# Web API (USE FASTAPI)
 # Support for weighted Dice
-# Improvement suggestions
+
+
+# IMPROVEMENTS:
+# - Storing last 100 rolls with more info about what kind of dice, etc.. Maybe as key value pairs
+# - CLI for using the dice roller
+# - Using a more user friendly format for saving files (just wanted to test arrays for this, thus .bin)
+# - Making the code more modular using ABC, Design Paterns...
