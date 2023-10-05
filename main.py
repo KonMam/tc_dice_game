@@ -65,7 +65,7 @@ if __name__ == "__main__":
 # Documentation ✅
 # Unit Tests ✅
 # Web API (USE FASTAPI) ✅
-# Support for weighted Dice
+# Support for weighted Dice ✅
 
 
 # IMPROVEMENTS:

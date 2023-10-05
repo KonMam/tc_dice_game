@@ -16,6 +16,16 @@ Example Usage:
 dice = Dice(6)
 ```
 
+### WeightedDice Class
+
+The `WeightedDice` class represents a single dice with a specific number of sides that might be weighted. You can create a `WeightedDice` object with the desired number of sides, and it will ensure that the number of sides is between 1 and 100 and that weights add up to a 100.
+
+Example Usage:
+```python
+# Create a 6-sided dice
+dice = WeightedDice(6, [0.1, 0.8, 0.1, 0, 0, 0])
+```
+
 ### RollHistory Class
 
 The `RollHistory` class is responsible for managing the history of dice rolls. It can store a specified number of rolls and provides methods for adding rolls, retrieving the last rolls, and saving/loading the roll history to/from a binary file.

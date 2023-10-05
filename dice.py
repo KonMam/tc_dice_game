@@ -1,21 +1,47 @@
+from abc import ABC, abstractmethod
 import random
 from array import array
 from collections import deque
 from typing import List
 
 
-class Dice:
+class BaseDice(ABC):
     """
-    A class representing a dice with a specific number of sides.
+    An abstract base class for dice.
+
+    Attributes:
+        sides (int): The number of sides on the dice.
+    """
+
+    def __init__(self, sides: int) -> None:
+        self.sides = sides
+
+    @abstractmethod
+    def roll(self) -> int:
+        """
+        Abstract method for rolling the dice and returning the result.
+
+        Returns:
+            int: The result of the roll.
+        """
+        pass
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.sides})"
+
+    def __str__(self) -> str:
+        return f"{self.sides}-sided dice"
+
+
+class Dice(BaseDice):
+    """
+    A class representing a regular (fair) dice.
 
     Args:
         sides (int): The number of sides on the dice.
 
     Raises:
         ValueError: If the number of sides is not between 1 and 100 (inclusive).
-
-    Attributes:
-        sides (int): The number of sides on the dice.
     """
 
     def __init__(self, sides: int) -> None:
@@ -24,11 +50,47 @@ class Dice:
         else:
             raise ValueError("Number of sides should be between 1 and 100")
 
-    def __repr__(self) -> str:
-        return f"Dice({self.sides})"
+    def roll(self) -> int:
+        """
+        Simulate rolling the regular (fair) dice and return the result.
 
-    def __str__(self) -> str:
-        return f"{self.sides}-sided dice"
+        Returns:
+            int: The result of the roll.
+        """
+        return random.randint(1, self.sides)
+
+
+class WeightedDice(BaseDice):
+    """
+    A class representing a weighted dice with a specific number of sides.
+
+    Args:
+        sides (int): The number of sides on the dice.
+        weights (List[float]): A list of weights for each side of the dice, summing up to 1.
+
+    Raises:
+        ValueError: If the number of sides is not between 1 and 100 (inclusive) or the length of weights is not equal to sides.
+    """
+
+    def __init__(self, sides: int, weights: List[float]) -> None:
+        if 1 <= sides <= 100:
+            self.sides = sides
+        if len(weights) == sides and sum(weights) == 1:
+            self.weights = weights
+        else:
+            raise ValueError("Invalid input for WeightedDice")
+
+    def roll(self) -> int:
+        """
+        Simulate rolling the weighted dice and return the result.
+
+        Returns:
+            int: The result of the roll.
+        """
+        return random.choices(range(1, self.sides + 1), weights=self.weights)[0]
+    
+    def __repr__(self) -> str:
+        return f"WeightedDice(sides={self.sides}, weights={self.weights})"
 
 
 class RollHistory:
@@ -106,7 +168,9 @@ class DiceRoller:
         roll_history (RollHistory): A RollHistory object to manage roll history.
     """
 
-    def __init__(self, dice_list: deque[Dice], roll_history: RollHistory) -> None:
+    def __init__(
+        self, dice_list: deque[Dice | WeightedDice], roll_history: RollHistory
+    ) -> None:
         self.dice_list = dice_list
         self.roll_history = roll_history
 
@@ -118,7 +182,7 @@ class DiceRoller:
             DiceRoller: The DiceRoller object for method chaining.
         """
         for dice in self.dice_list:
-            roll = random.randint(1, dice.sides)
+            roll = dice.roll()
             print(f"Result of a {dice} roll is {roll}.")
             self.roll_history.add_roll(roll)
         return self
@@ -183,7 +247,16 @@ class DiceRoller:
 
 
 def main():
-    dice_list = deque([Dice(6), Dice(20), Dice(100), Dice(13), Dice(99)], maxlen=5)
+    dice_list = deque(
+        [
+            Dice(6),
+            Dice(20),
+            WeightedDice(6, [0.1, 0.8, 0.1, 0, 0, 0]),
+            Dice(13),
+            Dice(99),
+        ],
+        maxlen=5,
+    )
     roll_history = RollHistory()
 
     dice_roller = DiceRoller(dice_list, roll_history)
@@ -191,7 +264,7 @@ def main():
     dice_roller.load_rolls_from_file().roll_multiple_times(
         3
     ).save_rolls_to_file().display_last_rolls(10)
-
+    
 
 if __name__ == "__main__":
     main()
