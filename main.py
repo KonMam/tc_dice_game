@@ -25,7 +25,7 @@ async def clear_dice():
         "message": f"Dice list has been cleared. Please add new dices using '/add-dice' endpoint."
     }
 
-# TODO: Change the return value of command to better suit the API
+
 @app.post("/roll-dice/{number_of_rolls}")
 async def roll_dice(number_of_rolls: int):
     dice_roller.roll_multiple_times(number_of_rolls)
@@ -74,3 +74,4 @@ if __name__ == "__main__":
 # - Using a more user friendly format for saving files (just wanted to test arrays for this, thus .bin)
 # - Making the code more modular using ABC, Design Paterns...
 # - Change the return value of roll_multiple_times method to better suit the web API and directly return the results.
+# - Add requirements.txt

@@ -1,4 +1,4 @@
-# Dice Roller Project Readme
+# Dice Roller Project
 
 This is a Python project that simulates rolling dice with different numbers of sides and manages a history of rolls. 
 
@@ -57,6 +57,21 @@ dice_roller.load_rolls_from_file()
 # Display the last 10 rolls
 dice_roller.display_last_rolls(10)
 ```
+
+### FastAPI Integration
+The project includes a FastAPI app that exposes endpoints for interacting with the dice rolling functionality through HTTP requests. Below are the endpoints you can use:
+
+POST /add-dice: Adds a new dice to the list of dice with a specified number of sides.
+
+POST /clear-dice: Clears the list of dices.
+
+POST /roll-dice/{number_of_rolls}: Simulates rolling the dice a specified number of times.
+
+GET /last-rolls/{n}: Retrieves the last n rolls from the roll history.
+
+POST /save-rolls: Saves the roll history to a binary file.
+
+POST /load-rolls: Loads roll history from a binary file.
 
 ## Getting Started
 
